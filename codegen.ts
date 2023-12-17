@@ -10,6 +10,9 @@ const config: CodegenConfig = {
       plugins: [],
       config: {
         useTypeImports: true,
+        dedupeFragments: true,
+        enumsAsTypes: true,
+        skipTypename: true,
       },
     },
   },
