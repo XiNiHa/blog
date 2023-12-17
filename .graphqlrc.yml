@@ -1,0 +1,2 @@
+schema: https://gql.hashnode.com
+documents: "src/**/*.{ts,tsx,astro}"

@@ -1,5 +1,16 @@
 ---
+import { graphql } from "@/gql";
+import { request } from "@/graphql";
 
+const query = await request(
+  graphql(`
+    query IndexQuery {
+      me {
+        name
+      }
+    }
+  `),
+);
 ---
 
 <html lang="ko">
@@ -8,5 +19,5 @@
     <meta name="viewport" content="width=device-width" />
     <title>XiNiHa's Blog</title>
   </head>
-  <body> </body>
+  <body>{query.me.name}</body>
 </html>

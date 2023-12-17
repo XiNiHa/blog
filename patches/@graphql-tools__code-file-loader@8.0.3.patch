@@ -1,0 +1,24 @@
+diff --git a/cjs/index.js b/cjs/index.js
+index d7f278bb9e921d55f2e300ff24c100016533a4d2..c074009057671a411dad6e2a8b07d797098e3ccb 100644
+--- a/cjs/index.js
++++ b/cjs/index.js
+@@ -24,6 +24,7 @@ const FILE_EXTENSIONS = [
+     '.jsx',
+     '.vue',
+     '.svelte',
++    '.astro',
+ ];
+ function createGlobbyOptions(options) {
+     return { absolute: true, ...options, ignore: [] };
+diff --git a/esm/index.js b/esm/index.js
+index e1ec348fb51fadd8b805d0e7f372f0d65daebce7..624811c1406cb3dad7c1f3095cb4ab27fa6792ac 100644
+--- a/esm/index.js
++++ b/esm/index.js
+@@ -20,6 +20,7 @@ const FILE_EXTENSIONS = [
+     '.jsx',
+     '.vue',
+     '.svelte',
++    '.astro',
+ ];
+ function createGlobbyOptions(options) {
+     return { absolute: true, ...options, ignore: [] };
