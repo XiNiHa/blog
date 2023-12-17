@@ -37,6 +37,9 @@ dependencies:
   graphql-request:
     specifier: ^6.1.0
     version: 6.1.0(graphql@16.8.1)
+  htmx.org:
+    specifier: ^1.9.9
+    version: 1.9.9
   ts-pattern:
     specifier: ^5.0.6
     version: 5.0.6
@@ -4785,6 +4788,10 @@ packages:
 
   /html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
+    dev: false
+
+  /htmx.org@1.9.9:
+    resolution: {integrity: sha512-PDEZU1me7UGLzQk98LyfLvwFgdtn9mrCVMmAxv1/UjshUnxsc+rouu+Ot2QfFZxsY4mBCoOed5nK7m9Nj2Tu7g==}
     dev: false
 
   /http-cache-semantics@4.1.1:

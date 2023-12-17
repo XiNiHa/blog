@@ -25,6 +25,11 @@ const publication = useFragment(LayoutFragment, $publication);
     <title>
       {title ?? getPublicationTitle(publication)}
     </title>
+    <script>
+      import htmx from "htmx.org";
+
+      window.htmx = htmx;
+    </script>
   </head>
   <body>
     <slot />

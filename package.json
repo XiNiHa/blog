@@ -23,6 +23,7 @@
     "clsx": "^2.0.0",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
+    "htmx.org": "^1.9.9",
     "ts-pattern": "^5.0.6"
   },
   "devDependencies": {
