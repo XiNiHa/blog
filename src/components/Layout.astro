@@ -25,6 +25,11 @@ const publication = useFragment(LayoutFragment, $publication);
     <title>
       {title ?? getPublicationTitle(publication)}
     </title>
+    <style is:global>
+      * {
+        word-break: keep-all;
+      }
+    </style>
     <script>
       import htmx from "htmx.org";
 

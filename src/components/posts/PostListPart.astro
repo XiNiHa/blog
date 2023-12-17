@@ -1,0 +1,45 @@
+---
+import { graphql, type FragmentType, useFragment } from "@/gql";
+
+import PostListItem from "./PostListItem.astro";
+import PostListPartLoader from "./PostListPartLoader";
+
+interface Props {
+  $publication: FragmentType<typeof PostListPartFragment>;
+}
+
+const PostListPartFragment = graphql(`
+  fragment PostListPartFragment on Publication {
+    posts(first: 10, after: $postListPart_after) {
+      edges {
+        node {
+          ...PostListItemFragment_post
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+    ...PostListItemFragment_publication
+  }
+`);
+
+const { $publication } = Astro.props;
+const publication = useFragment(PostListPartFragment, $publication);
+---
+
+{
+  publication.posts.edges.map(({ node }) => (
+    <PostListItem $post={node} $publication={publication} />
+  ))
+}
+{
+  publication.posts.pageInfo.hasNextPage &&
+    publication.posts.pageInfo.endCursor && (
+      <PostListPartLoader
+        client:idle
+        after={publication.posts.pageInfo.endCursor}
+      />
+    )
+}

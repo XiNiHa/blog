@@ -1,0 +1,30 @@
+---
+import PostListPart from "@/components/posts/PostListPart.astro";
+import { graphql } from "@/gql";
+import { request } from "@/graphql";
+
+const after = Astro.url.searchParams.get("after");
+
+const data = await request(
+  graphql(`
+    query PartialsPostsQuery(
+      $publicationId: ObjectId!
+      $postListPart_after: String
+    ) {
+      publication(id: $publicationId) {
+        ...PostListPartFragment
+      }
+    }
+  `),
+  {
+    publicationId: import.meta.env.HASHNODE_PUBLICATION_ID,
+    postListPart_after: after,
+  },
+);
+
+if (!data.publication) return new Response(null, { status: 404 });
+
+export const partial = true;
+---
+
+<PostListPart $publication={data.publication} />

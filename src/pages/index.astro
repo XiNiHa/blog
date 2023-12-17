@@ -1,20 +1,25 @@
 ---
 import Layout from "@/components/Layout.astro";
+import PostListPart from "@/components/posts/PostListPart.astro";
 import PublicationHeader from "@/components/publication/PublicationHeader.astro";
 import { graphql } from "@/gql";
 import { request } from "@/graphql";
 
 const query = await request(
   graphql(`
-    query IndexQuery($publicationId: ObjectId!) {
+    query IndexQuery($publicationId: ObjectId!, $postListPart_after: String) {
       publication(id: $publicationId) {
         id
         ...LayoutFragment
         ...PublicationHeaderFragment
+        ...PostListPartFragment
       }
     }
   `),
-  { publicationId: import.meta.env.HASHNODE_PUBLICATION_ID },
+  {
+    publicationId: import.meta.env.HASHNODE_PUBLICATION_ID,
+    postListPart_after: null,
+  },
 );
 
 if (!query.publication) return new Response(null, { status: 404 });
@@ -22,4 +27,7 @@ if (!query.publication) return new Response(null, { status: 404 });
 
 <Layout $publication={query.publication}>
   <PublicationHeader $publication={query.publication} />
+  <ul class="mx-auto max-w-5xl flex flex-col gap-6 px-8 py-10">
+    <PostListPart $publication={query.publication} />
+  </ul>
 </Layout>
