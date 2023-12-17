@@ -4,7 +4,7 @@ import checker from "vite-plugin-checker";
 
 export default defineConfig({
   output: "server",
-  integrations: [unocss()],
+  integrations: [unocss({ injectReset: true })],
   vite: {
     resolve: {
       alias: {
