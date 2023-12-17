@@ -47,8 +47,8 @@
   },
   "lint-staged": {
     "*.{astro,ts,tsx}": [
-      "eslint --fix src",
-      "prettier --write src"
+      "eslint --fix",
+      "prettier --write"
     ]
   },
   "pnpm": {
