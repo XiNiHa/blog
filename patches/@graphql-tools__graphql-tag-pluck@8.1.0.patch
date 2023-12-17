@@ -1,3 +1,17 @@
+diff --git a/cjs/config.js b/cjs/config.js
+index a0680b48ef2d54949c073ed94c89cb40001a3e55..c32539e521305cc98d5813fd435d3f112d619237 100644
+--- a/cjs/config.js
++++ b/cjs/config.js
+@@ -68,6 +68,9 @@ function generateConfig(filePath, code, _options) {
+         case '.svelte':
+             plugins.push('typescript', 'svelte');
+             break;
++        case ".astro":
++            plugins.push('typescript', 'jsx');
++            break;
+         default:
+             plugins.push('jsx', ...dynamicFlowPlugins);
+             break;
 diff --git a/cjs/index.js b/cjs/index.js
 index 6a9983ccea3d3aaa0eb75eacdb533904267610f6..a305c618124b06de74efd77757e86785d7e9632f 100644
 --- a/cjs/index.js
@@ -64,6 +78,20 @@ index 6a9983ccea3d3aaa0eb75eacdb533904267610f6..a305c618124b06de74efd77757e86785
 +    }
 +    return parseWithAstro(astroCompiler, fileData);
 +}
+diff --git a/esm/config.js b/esm/config.js
+index c31a28f3335c3f9a6b6698a4fe31ca95f4484c40..8d86de730ff411a0aeda6849b8af2bd442056238 100644
+--- a/esm/config.js
++++ b/esm/config.js
+@@ -66,6 +66,9 @@ export default function generateConfig(filePath, code, _options) {
+         case '.svelte':
+             plugins.push('typescript', 'svelte');
+             break;
++        case ".astro":
++            plugins.push('typescript', 'jsx');
++            break;
+         default:
+             plugins.push('jsx', ...dynamicFlowPlugins);
+             break;
 diff --git a/esm/index.js b/esm/index.js
 index ef74bb9aa35b409b72ed3b029ec7748962184ea2..e562cde677c16ffc618eaf5b3d893f6dd9ec59fa 100644
 --- a/esm/index.js

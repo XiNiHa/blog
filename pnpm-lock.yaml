@@ -9,7 +9,7 @@ patchedDependencies:
     hash: npnjdze6onvtezc5e3pnbm4uay
     path: patches/@graphql-tools__code-file-loader@8.0.3.patch
   '@graphql-tools/graphql-tag-pluck@8.1.0':
-    hash: a5qm7xp4xcoogcbxsiltih463u
+    hash: g7v7uplqoh7n4kp5hgunuleysi
     path: patches/@graphql-tools__graphql-tag-pluck@8.1.0.patch
 
 dependencies:
@@ -1308,7 +1308,7 @@ packages:
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/graphql-tag-pluck': 8.1.0(patch_hash=a5qm7xp4xcoogcbxsiltih463u)(graphql@16.8.1)
+      '@graphql-tools/graphql-tag-pluck': 8.1.0(patch_hash=g7v7uplqoh7n4kp5hgunuleysi)(graphql@16.8.1)
       '@graphql-tools/utils': 10.0.11(graphql@16.8.1)
       globby: 11.1.0
       graphql: 16.8.1
@@ -1418,7 +1418,7 @@ packages:
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/graphql-tag-pluck': 8.1.0(patch_hash=a5qm7xp4xcoogcbxsiltih463u)(graphql@16.8.1)
+      '@graphql-tools/graphql-tag-pluck': 8.1.0(patch_hash=g7v7uplqoh7n4kp5hgunuleysi)(graphql@16.8.1)
       '@graphql-tools/utils': 10.0.11(graphql@16.8.1)
       graphql: 16.8.1
       is-glob: 4.0.3
@@ -1437,7 +1437,7 @@ packages:
     dependencies:
       '@ardatan/sync-fetch': 0.0.1
       '@graphql-tools/executor-http': 1.0.5(@types/node@20.10.4)(graphql@16.8.1)
-      '@graphql-tools/graphql-tag-pluck': 8.1.0(patch_hash=a5qm7xp4xcoogcbxsiltih463u)(graphql@16.8.1)
+      '@graphql-tools/graphql-tag-pluck': 8.1.0(patch_hash=g7v7uplqoh7n4kp5hgunuleysi)(graphql@16.8.1)
       '@graphql-tools/utils': 10.0.11(graphql@16.8.1)
       '@whatwg-node/fetch': 0.9.14
       graphql: 16.8.1
@@ -1463,7 +1463,7 @@ packages:
       unixify: 1.0.0
     dev: true
 
-  /@graphql-tools/graphql-tag-pluck@8.1.0(patch_hash=a5qm7xp4xcoogcbxsiltih463u)(graphql@16.8.1):
+  /@graphql-tools/graphql-tag-pluck@8.1.0(patch_hash=g7v7uplqoh7n4kp5hgunuleysi)(graphql@16.8.1):
     resolution: {integrity: sha512-kt5l6H/7QxQcIaewInTcune6NpATojdFEW98/8xWcgmy7dgXx5vU9e0AicFZIH+ewGyZzTpwFqO2RI03roxj2w==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
