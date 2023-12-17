@@ -1,4 +1,6 @@
 ---
+import dayjs from "dayjs";
+
 import { graphql, type FragmentType, useFragment } from "@/gql";
 
 interface Props {
@@ -22,6 +24,7 @@ const PostListItemFragment_post = graphql(`
       id
       name
     }
+    publishedAt
     readTimeInMinutes
     views
     reactionCount
@@ -80,6 +83,10 @@ const publication = useFragment(PostListItemFragment_publication, $publication);
               </div>
             )
           }
+          <div class="flex items-center gap-1">
+            <i class="i-ri-calendar-2-line inline-block"></i>
+            {dayjs(post.publishedAt).format("MM. DD. YYYY")}
+          </div>
           <div class="flex items-center gap-1">
             <i class="i-ri-time-line inline-block"></i>
             {post.readTimeInMinutes} min{post.readTimeInMinutes > 1 && "s"} read
