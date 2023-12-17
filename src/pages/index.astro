@@ -1,23 +1,25 @@
 ---
+import Layout from "@/components/Layout.astro";
+import PublicationHeader from "@/components/publication/PublicationHeader.astro";
 import { graphql } from "@/gql";
 import { request } from "@/graphql";
 
 const query = await request(
   graphql(`
-    query IndexQuery {
-      me {
-        name
+    query IndexQuery($publicationId: ObjectId!) {
+      publication(id: $publicationId) {
+        id
+        ...LayoutFragment
+        ...PublicationHeaderFragment
       }
     }
   `),
+  { publicationId: import.meta.env.HASHNODE_PUBLICATION_ID },
 );
+
+if (!query.publication) return new Response(null, { status: 404 });
 ---
 
-<html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>XiNiHa's Blog</title>
-  </head>
-  <body>{query.me.name}</body>
-</html>
+<Layout $publication={query.publication}>
+  <PublicationHeader $publication={query.publication} />
+</Layout>

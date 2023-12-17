@@ -1,0 +1,33 @@
+---
+import { graphql, type FragmentType, useFragment } from "@/gql";
+
+interface Props {
+  $publication: FragmentType<typeof PublicationTitleFragment>;
+}
+
+export const PublicationTitleFragment = graphql(`
+  fragment PublicationTitleFragment on Publication {
+    title
+    displayTitle
+    author {
+      name
+    }
+  }
+`);
+
+export function getPublicationTitle(
+  $publication: FragmentType<typeof PublicationTitleFragment>,
+) {
+  const publication = useFragment(PublicationTitleFragment, $publication);
+
+  return (
+    (publication.displayTitle ?? publication.title) ||
+    `${publication.author.name}'s Blog`
+  );
+}
+
+const { $publication } = Astro.props;
+const title = getPublicationTitle($publication);
+---
+
+{title}

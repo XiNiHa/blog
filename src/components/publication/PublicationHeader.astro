@@ -1,0 +1,90 @@
+---
+import clsx from "clsx";
+import { match } from "ts-pattern";
+
+import { isTruthyEntry } from "@/common/isTruthyEntry";
+import { graphql, type FragmentType, useFragment } from "@/gql";
+
+import PublicationTitle from "./PublicationTitle.astro";
+
+interface Props {
+  $publication: FragmentType<typeof PublicationHeaderFragment>;
+}
+
+const PublicationHeaderFragment = graphql(`
+  fragment PublicationHeaderFragment on Publication {
+    author {
+      profilePicture
+    }
+    about {
+      html
+    }
+    links {
+      twitter
+      instagram
+      github
+      website
+      hashnode
+      youtube
+      dailydev
+      linkedin
+      mastodon
+    }
+    ...PublicationTitleFragment
+  }
+`);
+
+const { $publication } = Astro.props;
+const publication = useFragment(PublicationHeaderFragment, $publication);
+
+type Services = Exclude<
+  keyof NonNullable<typeof publication.links>,
+  "__typename"
+>;
+---
+
+<header class="flex flex-col items-center justify-center gap-4 p-8 shadow">
+  <img
+    src={publication.author.profilePicture}
+    alt="Profile picture of the publication author"
+    class="max-w-48 w-50vw rounded-full"
+  />
+  <h1 class="text-2xl font-semibold">
+    <PublicationTitle $publication={publication} />
+  </h1>
+  {
+    publication.about && (
+      <div set:html={publication.about.html} class="text-lg text-gray-6" />
+    )
+  }
+  {
+    Object.values(publication.links ?? {}).some(Boolean) && (
+      <ul class="flex gap-2">
+        {(Object.entries(publication.links!) as [Services, string | null][])
+          .filter(isTruthyEntry)
+          .map(([service, link]) => (
+            <li class="transform text-gray-5 transition-all hover:(scale-110 text-gray-9)">
+              <a href={link} target="_blank">
+                <span
+                  class={clsx(
+                    "inline-block text-lg",
+                    match(service)
+                      .with("twitter", () => "i-ri-twitter-x-fill")
+                      .with("instagram", () => "i-ri-instagram-fill")
+                      .with("github", () => "i-ri-github-fill")
+                      .with("website", () => "i-ri-earth-fill")
+                      .with("hashnode", () => "i-my-hashnode")
+                      .with("youtube", () => "i-ri-youtube-fill")
+                      .with("dailydev", () => "i-logos-dailydev-icon")
+                      .with("linkedin", () => "i-ri-linkedin-fill")
+                      .with("mastodon", () => "i-ri-mastodon-fill")
+                      .exhaustive(),
+                  )}
+                />
+              </a>
+            </li>
+          ))}
+      </ul>
+    )
+  }
+</header>
