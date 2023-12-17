@@ -16,10 +16,14 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.3.3",
+    "@iconify-json/logos": "^1.1.41",
+    "@iconify-json/ri": "^1.1.17",
     "@unocss/reset": "^0.58.0",
     "astro": "^4.0.6",
+    "clsx": "^2.0.0",
     "graphql": "^16.8.1",
-    "graphql-request": "^6.1.0"
+    "graphql-request": "^6.1.0",
+    "ts-pattern": "^5.0.6"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.0",
@@ -38,6 +42,7 @@
     "eslint-plugin-astro": "^0.31.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.0.1",
+    "fast-glob": "^3.3.2",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
