@@ -1,3 +1,4 @@
+import cloudflare from "@astrojs/cloudflare";
 import { defineConfig } from "astro/config";
 import unocss from "unocss/astro";
 import checker from "vite-plugin-checker";
@@ -13,4 +14,5 @@ export default defineConfig({
     },
     plugins: [checker({ typescript: true })],
   },
+  adapter: cloudflare(),
 });

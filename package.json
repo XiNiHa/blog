@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.3.3",
+    "@astrojs/cloudflare": "^8.0.0",
     "@iconify-json/logos": "^1.1.41",
     "@iconify-json/ri": "^1.1.17",
     "@unocss/reset": "^0.58.0",
