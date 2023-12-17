@@ -1,6 +1,6 @@
-declare global {
-  import HtmxModule from "htmx.org";
+import HtmxModule from "htmx.org";
 
+declare global {
   interface Window {
     htmx: typeof HtmxModule;
   }
