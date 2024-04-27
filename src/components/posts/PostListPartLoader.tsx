@@ -14,7 +14,7 @@ export default function PostListPartLoader(props: Props) {
       ([entry]) => {
         if (entry?.isIntersecting && lastFetch < Date.now() - 1000) {
           lastFetch = Date.now();
-          window.htmx
+          void window.htmx
             .ajax("GET", `/partials/posts?after=${props.after}`, {
               source: el,
               swap: "outerHTML",
