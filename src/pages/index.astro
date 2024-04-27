@@ -2,6 +2,7 @@
 import Layout from "@/components/Layout.astro";
 import PostListPart from "@/components/posts/PostListPart.astro";
 import PublicationHeader from "@/components/publication/PublicationHeader.astro";
+import { getEnvVars } from "@/envVars";
 import { graphql } from "@/gql";
 import { request } from "@/graphql";
 
@@ -17,7 +18,7 @@ const query = await request(
     }
   `),
   {
-    publicationId: import.meta.env.HASHNODE_PUBLICATION_ID,
+    publicationId: getEnvVars(Astro).HASHNODE_PUBLICATION_ID,
     postListPart_after: null,
   },
 );

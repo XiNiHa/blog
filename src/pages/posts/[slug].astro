@@ -10,6 +10,7 @@ import Layout from "@/components/Layout.astro";
 import PostMetadata from "@/components/PostMetadata.astro";
 import PublicationHeader from "@/components/publication/PublicationHeader.astro";
 import Tag from "@/components/Tag.astro";
+import { getEnvVars } from "@/envVars";
 import { graphql } from "@/gql";
 import { request } from "@/graphql";
 
@@ -40,7 +41,7 @@ const query = await request(
     }
   `),
   {
-    publicationId: import.meta.env.HASHNODE_PUBLICATION_ID,
+    publicationId: getEnvVars(Astro).HASHNODE_PUBLICATION_ID,
     postSlug: slug,
   },
 );
