@@ -1,7 +1,8 @@
 ---
-import dayjs from "dayjs";
-
 import { type FragmentType, graphql, useFragment } from "@/gql";
+
+import PostMetadata from "../PostMetadata.astro";
+import Tag from "../Tag.astro";
 
 interface Props {
   $post: FragmentType<typeof PostListItemFragment_post>;
@@ -17,19 +18,10 @@ const PostListItemFragment_post = graphql(`
     coverImage {
       url
     }
-    author {
-      name
-    }
     tags {
-      id
-      name
+      ...TagFragment_tag
     }
-    publishedAt
-    readTimeInMinutes
-    views
-    reactionCount
-    responseCount
-    replyCount
+    ...PostMetadataFragment_post
   }
 `);
 
@@ -44,76 +36,40 @@ const post = useFragment(PostListItemFragment_post, $post);
 const publication = useFragment(PostListItemFragment_publication, $publication);
 ---
 
-<a href={`/posts/${post.slug}`}>
-  <li
-    class="transition-outline-color,transform,box-shadow block flex flex-col transform gap-8 rounded-lg shadow outline-1 outline-gray-2 outline duration-500 md:flex-row hover:(shadow-md outline-2 outline-blue-2 -translate-y-1)"
-  >
-    {
-      post.coverImage && (
-        <img
-          class="my-auto h-fit md:max-w-2/5"
-          src={post.coverImage.url}
-          alt="Cover image"
-        />
-      )
-    }
-    <div class="flex flex-col gap-8 md:(flex-row py-8 pr-8) lt-md:(px-8 pb-8)">
-      <div class="border border-gray-1 lt-md:mx-2 md:my-2"></div>
-      <div class="flex flex-col gap-4 md:min-h-72">
+<li
+  class="transition-outline-color,transform,box-shadow block flex flex-col transform gap-8 rounded-lg shadow outline-1 outline-gray-2 outline duration-500 md:flex-row hover:(shadow-md outline-2 outline-blue-2 -translate-y-1)"
+>
+  {
+    post.coverImage && (
+      <a
+        href={`/posts/${post.slug}`}
+        class="my-auto block h-fit flex-shrink-0 md:w-2/5"
+      >
+        <img src={post.coverImage.url} alt="Cover image" />
+      </a>
+    )
+  }
+  <div class="flex flex-col gap-8 md:(flex-row py-8 pr-8) lt-md:(px-8 pb-8)">
+    <div class="border border-gray-1 lt-md:mx-2 md:my-2"></div>
+    <div class="flex flex-col gap-4 md:min-h-72">
+      <a href={`/posts/${post.slug}`}>
         <p class="text-2xl font-medium">{post.title}</p>
-        {
-          (post.tags?.length ?? 0) > 0 && (
-            <ul class="flex flex-wrap gap-2">
-              {post.tags?.map((tag) => (
-                <li class="inline-block rounded-md bg-gray-2 px-2 py-1 text-sm text-gray-6 font-medium">
-                  {tag.name}
-                </li>
-              ))}
-            </ul>
-          )
-        }
-        <div
-          class="flex flex-wrap items-center gap-4 text-gray-5 font-medium leading-none"
-        >
-          {
-            publication.isTeam && (
-              <div class="flex items-center gap-1">
-                <i class="i-ri-account-circle-line inline-block" />
-                {post.author.name}
-              </div>
-            )
-          }
-          <div class="flex items-center gap-1">
-            <i class="i-ri-calendar-2-line inline-block"></i>
-            {dayjs(post.publishedAt).format("MM. DD. YYYY")}
-          </div>
-          <div class="flex items-center gap-1">
-            <i class="i-ri-time-line inline-block"></i>
-            {post.readTimeInMinutes} min{post.readTimeInMinutes > 1 && "s"} read
-          </div>
-          <div class="flex items-center gap-1">
-            <i class="i-ri-book-read-line inline-block"></i>
-            {post.views}
-          </div>
-          {
-            post.reactionCount > 0 && (
-              <div class="flex items-center gap-1">
-                <i class="i-ri-heart-fill inline-block" />
-                {post.reactionCount}
-              </div>
-            )
-          }
-          {
-            post.responseCount + post.replyCount > 0 && (
-              <div class="flex items-center gap-1">
-                <i class="i-ri-message-2-line inline-block" />
-                {post.responseCount + post.replyCount}
-              </div>
-            )
-          }
-        </div>
+      </a>
+      {
+        (post.tags?.length ?? 0) > 0 && (
+          <ul class="flex flex-wrap gap-2">
+            {post.tags?.map((tag) => (
+              <li>
+                <Tag $tag={tag} />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      <PostMetadata $post={post} showAuthor={publication.isTeam} />
+      <a href={`/posts/${post.slug}`} class="flex-grow">
         <p class="text-lg text-gray-5">{post.subtitle ?? post.brief}</p>
-      </div>
+      </a>
     </div>
-  </li>
-</a>
+  </div>
+</li>

@@ -1,0 +1,73 @@
+---
+import clsx from "clsx";
+import dayjs from "dayjs";
+
+import { type FragmentType, graphql, useFragment } from "@/gql";
+
+interface Props {
+  $post: FragmentType<typeof PostMetadataFragment_post>;
+  showAuthor?: boolean;
+  class?: string;
+}
+
+const PostMetadataFragment_post = graphql(`
+  fragment PostMetadataFragment_post on Post {
+    author {
+      name
+    }
+    publishedAt
+    readTimeInMinutes
+    views
+    reactionCount
+    responseCount
+    replyCount
+  }
+`);
+
+const { $post, showAuthor, class: className } = Astro.props;
+const post = useFragment(PostMetadataFragment_post, $post);
+---
+
+<div
+  class={clsx(
+    "flex flex-wrap items-center gap-4 text-gray-5 font-medium leading-none",
+    className,
+  )}
+>
+  {
+    showAuthor && (
+      <div class="flex items-center gap-1">
+        <i class="i-ri-account-circle-line inline-block" />
+        {post.author.name}
+      </div>
+    )
+  }
+  <div class="flex items-center gap-1">
+    <i class="i-ri-calendar-2-line inline-block"></i>
+    {dayjs(post.publishedAt).format("MM. DD. YYYY")}
+  </div>
+  <div class="flex items-center gap-1">
+    <i class="i-ri-time-line inline-block"></i>
+    {post.readTimeInMinutes} min{post.readTimeInMinutes > 1 && "s"} read
+  </div>
+  <div class="flex items-center gap-1">
+    <i class="i-ri-book-read-line inline-block"></i>
+    {post.views}
+  </div>
+  {
+    post.reactionCount > 0 && (
+      <div class="flex items-center gap-1">
+        <i class="i-ri-heart-fill inline-block" />
+        {post.reactionCount}
+      </div>
+    )
+  }
+  {
+    post.responseCount + post.replyCount > 0 && (
+      <div class="flex items-center gap-1">
+        <i class="i-ri-message-2-line inline-block" />
+        {post.responseCount + post.replyCount}
+      </div>
+    )
+  }
+</div>

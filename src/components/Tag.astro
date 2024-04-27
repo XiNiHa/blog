@@ -1,0 +1,24 @@
+---
+import { type FragmentType, graphql, useFragment } from "@/gql";
+
+interface Props {
+  $tag: FragmentType<typeof TagFragment_tag>;
+}
+
+const TagFragment_tag = graphql(`
+  fragment TagFragment_tag on Tag {
+    name
+    slug
+  }
+`);
+
+const { $tag } = Astro.props;
+const tag = useFragment(TagFragment_tag, $tag);
+---
+
+<a
+  href={`/tags/${tag.slug}`}
+  class="inline-block rounded-md bg-gray-2 px-2 py-1 text-sm text-gray-6 font-medium"
+>
+  {tag.name}
+</a>

@@ -5,6 +5,7 @@ import {
   defineConfig,
   presetIcons,
   presetUno,
+  transformerDirectives,
   transformerVariantGroup,
 } from "unocss";
 
@@ -22,5 +23,5 @@ export default defineConfig({
       },
     }),
   ],
-  transformers: [transformerVariantGroup()],
+  transformers: [transformerDirectives(), transformerVariantGroup()],
 });

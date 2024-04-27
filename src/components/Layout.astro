@@ -1,4 +1,6 @@
 ---
+import { ViewTransitions } from "astro:transitions";
+
 import { type FragmentType, graphql, useFragment } from "@/gql";
 
 import { getPublicationTitle } from "./publication/PublicationTitle.astro";
@@ -25,6 +27,7 @@ const publication = useFragment(LayoutFragment, $publication);
     <title>
       {title ?? getPublicationTitle(publication)}
     </title>
+    <ViewTransitions />
     <style is:global>
       * {
         word-break: keep-all;

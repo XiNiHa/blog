@@ -44,14 +44,18 @@ type Services = Exclude<
 ---
 
 <header class="flex flex-col items-center justify-center gap-4 p-8 shadow">
-  <img
-    src={publication.author.profilePicture}
-    alt="Profile picture of the publication author"
-    class="max-w-48 w-50vw rounded-full"
-  />
-  <h1 class="text-2xl font-semibold">
-    <PublicationTitle $publication={publication} />
-  </h1>
+  <a href="/">
+    <img
+      src={publication.author.profilePicture}
+      alt="Profile picture of the publication author"
+      class="max-w-48 w-50vw rounded-full"
+    />
+  </a>
+  <a href="/">
+    <h1 class="text-2xl font-semibold">
+      <PublicationTitle $publication={publication} />
+    </h1>
+  </a>
   {
     publication.about && (
       <div set:html={publication.about.html} class="text-lg text-gray-6" />

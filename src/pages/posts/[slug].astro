@@ -1,0 +1,215 @@
+---
+import rehypeShiki from "@shikijs/rehype";
+import rehypeStringify from "rehype-stringify";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { unified } from "unified";
+
+import Layout from "@/components/Layout.astro";
+import PostMetadata from "@/components/PostMetadata.astro";
+import PublicationHeader from "@/components/publication/PublicationHeader.astro";
+import Tag from "@/components/Tag.astro";
+import { graphql } from "@/gql";
+import { request } from "@/graphql";
+
+const slug = Astro.params.slug;
+if (!slug) return new Response(null, { status: 404 });
+
+const query = await request(
+  graphql(`
+    query PostQuery($publicationId: ObjectId!, $postSlug: String!) {
+      publication(id: $publicationId) {
+        isTeam
+        post(slug: $postSlug) {
+          id
+          title
+          brief
+          subtitle
+          tags {
+            ...TagFragment_tag
+          }
+          content {
+            markdown
+          }
+          ...PostMetadataFragment_post
+        }
+        ...LayoutFragment
+        ...PublicationHeaderFragment
+      }
+    }
+  `),
+  {
+    publicationId: import.meta.env.HASHNODE_PUBLICATION_ID,
+    postSlug: slug,
+  },
+);
+
+if (!query.publication?.post) return new Response(null, { status: 404 });
+
+const languages = new Map<string, string>([
+  ["jsx", "JSX"],
+  ["tsx", "TSX"],
+  ["ts", "TypeScript"],
+  ["typescript", "TypeScript"],
+  ["js", "JavaScript"],
+  ["javascript", "JavaScript"],
+]);
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkRehype)
+  .use(rehypeShiki, {
+    theme: "github-light",
+    addLanguageClass: true,
+    transformers: [
+      {
+        pre(node) {
+          const wrapper: typeof node = {
+            type: "element",
+            tagName: "div",
+            properties: {
+              class: "shiki-wrapper relative",
+            },
+            children: [node],
+          };
+
+          if (this.options.lang !== "plaintext") {
+            wrapper.children.unshift({
+              type: "element",
+              tagName: "div",
+              properties: {
+                class: "shiki-lang",
+              },
+              children: [
+                {
+                  type: "text",
+                  value: languages.get(this.options.lang) ?? this.options.lang,
+                },
+              ],
+            });
+          }
+
+          return wrapper;
+        },
+      },
+    ],
+  })
+  .use(rehypeStringify)
+  .process(
+    query.publication.post.content.markdown.replaceAll(
+      /(!\[.*\])\((.+) .+\)/g,
+      "$1($2)",
+    ),
+  );
+---
+
+<Layout $publication={query.publication}>
+  <PublicationHeader $publication={query.publication} />
+  <article
+    class="mx-auto max-w-5xl flex flex-col items-center gap-6 px-4 py-12 md:px-12"
+  >
+    <div class="flex flex-col items-center gap-4">
+      <h1 class="text-4xl text-gray-7 font-semibold">
+        {query.publication.post.title}
+      </h1>
+      {
+        query.publication.post.subtitle && (
+          <p class="text-1.6rem text-gray-4 font-medium">
+            {query.publication.post.subtitle}
+          </p>
+        )
+      }
+    </div>
+    <PostMetadata
+      $post={query.publication.post}
+      showAuthor={query.publication.isTeam}
+      class="text-lg"
+    />
+    {
+      (query.publication.post.tags?.length ?? 0) > 0 && (
+        <ul class="flex flex-wrap gap-2">
+          {query.publication.post.tags?.map((tag) => (
+            <Tag $tag={tag} />
+          ))}
+        </ul>
+      )
+    }
+    <div class="content" set:html={file.value} />
+  </article>
+</Layout>
+
+<style>
+  .content {
+    @apply w-full my-12 text-xl leading-[1.7] text-gray-7;
+  }
+
+  .content :global(:is(h1, h2, h3, h4, h5, h6)) {
+    @apply my-6;
+  }
+
+  .content :global(h1) {
+    @apply text-4xl font-semibold;
+  }
+
+  .content :global(h2) {
+    @apply text-3xl font-semibold;
+  }
+
+  .content :global(h3) {
+    @apply text-2xl font-semibold;
+  }
+
+  .content :global(h4) {
+    @apply text-1.35rem font-semibold;
+  }
+
+  .content :global(p) {
+    @apply my-3;
+  }
+
+  .content :global(a) {
+    @apply underline;
+  }
+
+  .content :global(img) {
+    @apply my-12;
+  }
+
+  .content :global(.shiki-wrapper) {
+    @apply my-12 border border-gray-3 rounded-lg w-full overflow-hidden;
+  }
+
+  .content :global(.shiki-lang) {
+    @apply absolute top-0 right-0 px-2 py-1 border-l border-b border-gray-3 bg-white rounded-lb text-base;
+  }
+
+  .content :global(pre.shiki) {
+    @apply px-6 py-4 w-full overflow-auto;
+  }
+
+  .content :global(:is(ul, ol)) {
+    @apply pl-8 my-6;
+  }
+
+  .content :global(ul) {
+    @apply list-disc;
+  }
+
+  .content :global(ol) {
+    @apply list-decimal;
+  }
+
+  .content :global(hr) {
+    @apply my-12;
+  }
+
+  .content :global(strong) {
+    @apply font-semibold;
+  }
+
+  .content :global(:not(.shiki) > code) {
+    @apply bg-gray-1 text-gray-9 px-1.5 py-1 rounded text-base;
+  }
+</style>
