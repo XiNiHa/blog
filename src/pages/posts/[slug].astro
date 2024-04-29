@@ -4,6 +4,7 @@ import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import { loadWasm } from "shiki";
 import { unified } from "unified";
 
 import Layout from "@/components/Layout.astro";
@@ -55,6 +56,11 @@ const languages = new Map<string, string>([
   ["js", "JavaScript"],
   ["javascript", "JavaScript"],
 ]);
+
+await loadWasm(async (info) => {
+  const { default: mod } = await import("shiki/onig.wasm?module");
+  return WebAssembly.instantiate(mod, info);
+});
 
 const file = await unified()
   .use(remarkParse)
