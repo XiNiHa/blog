@@ -3,3 +3,11 @@
 /// <reference types="astro/client" />
 
 import "@total-typescript/ts-reset";
+
+type Runtime = import("@astrojs/cloudflare").Runtime<Env>;
+
+declare global {
+  declare namespace App {
+    interface Locals extends Runtime {}
+  }
+}

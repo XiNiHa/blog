@@ -1,6 +1,5 @@
 ---
 import PostListPart from "@/components/posts/PostListPart.astro";
-import { getEnvVars } from "@/envVars";
 import { graphql } from "@/gql";
 import { request } from "@/graphql";
 
@@ -18,7 +17,7 @@ const data = await request(
     }
   `),
   {
-    publicationId: getEnvVars(Astro).HASHNODE_PUBLICATION_ID,
+    publicationId: Astro.locals.runtime.env.HASHNODE_PUBLICATION_ID,
     postListPart_after: after,
   },
 );

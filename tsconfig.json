@@ -7,7 +7,8 @@
       "@/*": ["./src/*"]
     },
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "types": ["@cloudflare/workers-types/experimental"]
   },
   "include": ["src/**/*"]
 }

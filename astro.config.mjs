@@ -15,5 +15,10 @@ export default defineConfig({
     },
     plugins: [checker({ typescript: true })],
   },
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+    wasmModuleImports: true,
+  }),
 });
